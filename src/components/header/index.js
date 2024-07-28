@@ -12,11 +12,6 @@ function Header({ user, profileInfo }) {
 
   const menuItems = [
     {
-      label: "Home",
-      path: "/",
-      show: true,
-    },
-    {
       label: "Feed",
       path: "/feed",
       show: profileInfo,
@@ -47,11 +42,6 @@ function Header({ user, profileInfo }) {
       show: profileInfo,
     },
     {
-      label: "Membership",
-      path: "/membership",
-      show: profileInfo,
-    },
-    {
       label: "Account",
       path: "/account",
       show: profileInfo,
@@ -77,7 +67,7 @@ function Header({ user, profileInfo }) {
                 menuItem.show ? (
                   <Link
                     href={menuItem.path}
-                    className="flex w-full items-center py-2 text-lg font-semibold"
+                    className="flex navitem w-full items-center py-2 text-lg font-semibold"
                   >
                     {menuItem.label}
                   </Link>
@@ -93,7 +83,7 @@ function Header({ user, profileInfo }) {
           </SheetContent>
         </Sheet>
         <Link className="hidden font-bold text-3xl lg:flex mr-6" href={"/"}>
-          JOBSCO
+          Workwise
         </Link>
         <nav className="ml-auto hidden lg:flex gap-6 items-center">
           {menuItems.map((menuItem) =>
@@ -107,11 +97,7 @@ function Header({ user, profileInfo }) {
               </Link>
             ) : null
           )}
-          <Moon
-            className="cursor-pointer"
-            fill={theme === "dark" ? "light" : "dark"}
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          />
+          
           <UserButton afterSignOutUrl="/" />
         </nav>
       </header>

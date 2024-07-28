@@ -10,9 +10,12 @@ import { Input } from "../ui/input";
 import { createClient } from "@supabase/supabase-js";
 import { createFeedPostAction, updateFeedPostAction } from "@/actions";
 
+const subbaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const subbaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 const supabaseClient = createClient(
-  "https://ymsijpnegskkoiuerthi.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inltc2lqcG5lZ3Nra29pdWVydGhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQyMzYzNDYsImV4cCI6MjAyOTgxMjM0Nn0.PM7Nr9qTZFEJsf62eHgkFXKGPqt0gfMdFN6SOJjCP6M"
+  subbaseUrl,
+  subbaseKey
 );
 
 function Feed({ user, profileInfo, allFeedPosts }) {
@@ -22,6 +25,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
     imageURL: "",
   });
   const [imageData, setImageData] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   function handleFileOnChange(event) {
     event.preventDefault();
@@ -56,6 +60,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
   }
 
   async function handleSaveFeedPost() {
+    setLoading(true)
     await createFeedPostAction(
       {
         userId: user?.id,
@@ -72,6 +77,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
       imageURL: "",
       message: "",
     });
+    setLoading(false)
   }
 
   async function handleUpdateFeedPostLikes(getCurrentFeedPostItem) {
@@ -100,40 +106,40 @@ function Feed({ user, profileInfo, allFeedPosts }) {
 
   return (
     <Fragment>
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto">
         <div className="flex items-baseline justify-between dark:border-white border-b pb-6 pt-24">
-          <h1 className="dark:text-white text-4xl font-bold tracking-tight text-gray-900">
+          <h1 className="dark:text-white text-xl font-bold tracking-tight text-gray-800">
             Explore Feed
           </h1>
           <div className="flex items-center">
             <Button
               onClick={() => setShowPostDialog(true)}
-              className="flex h-11 items-center justify-center px-5"
+              className="flex bg-blue-500 text-white hover:bg-blue-600 h-11 items-center justify-center px-5"
             >
               Add New Post
             </Button>
           </div>
         </div>
-        <div className="py-12">
-          <div className="container m-auto p-0 flex flex-col gap-5 text-gray-700">
+        <div className="py-12 w-full">
+          <div className="w-full m-auto p-0 grid lg:grid-cols-2 gap-2 text-gray-700">
             {allFeedPosts && allFeedPosts.length > 0 ? (
               allFeedPosts.map((feedPostItem) => (
                 <div
                   key={feedPostItem._id}
-                  className="group relative -mx-4 p-6 rounded-3xl bg-gray-100 hover:bg-white hover:shadow-2xl cursor-auto shadow-2xl shadow-transparent gap-8 flex"
+                  className="group relative  p-3 rounded-3xl bg-slate-300 hover:bg-white hover:shadow-2xl cursor-auto shadow-2xl shadow-transparent gap-8 flex"
                 >
                   <div className="sm:w-2/6 rounded-3xl overflow-hidden transition-all duration-500 group-hover:rounded-xl">
                     <img
                       src={feedPostItem?.image}
                       alt="Post"
-                      className="h-80 w-full object-cover object-top transition duration-500 group-hover:scale-105"
+                      className=" w-full h-full object-cover object-top transition duration-500 group-hover:scale-105"
                     />
                   </div>
                   <div className="sm:p-2 sm:pl-0 sm:w-4/6">
                     <span className="mt-4 mb-2 inline-block font-medium text-gray-500 sm:mt-0">
                       {feedPostItem?.userName}
                     </span>
-                    <h3 className="mb-6 text-4xl font-bold text-gray-900">
+                    <h3 className="mb-6 text-sm font-bold text-gray-900">
                       {feedPostItem?.message}
                     </h3>
                     <div className="flex gap-5">
@@ -141,10 +147,10 @@ function Feed({ user, profileInfo, allFeedPosts }) {
                         size={25}
                         fill={
                           feedPostItem?.likes?.length > 0
-                            ? "#000000"
+                            ? "#FF0000"
                             : "#ffffff"
                         }
-                        className="cursor-pointer"
+                        className={`cursor-pointer text ${feedPostItem?.likes?.length > 0 && 'text-white'}`}
                         onClick={() => handleUpdateFeedPostLikes(feedPostItem)}
                       />
                       <span className="font-semibold text-xl">
@@ -196,10 +202,10 @@ function Feed({ user, profileInfo, allFeedPosts }) {
             </Label>
             <Button
               onClick={handleSaveFeedPost}
-              disabled={formData?.imageURL === "" && formData?.message === ""}
+              disabled={formData?.imageURL === "" && formData?.message === "" || loading}
               className="flex w-40 h-11 items-center justify-center px-5 disabled:opacity-65"
             >
-              Post
+              {loading ?  'posting...' : 'Post'}
             </Button>
           </div>
         </DialogContent>

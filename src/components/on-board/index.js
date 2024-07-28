@@ -13,9 +13,12 @@ import { useUser } from "@clerk/nextjs";
 import { createProfileAction } from "@/actions";
 import { createClient } from "@supabase/supabase-js";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const subbaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 const supabaseClient = createClient(
-  "https://ymsijpnegskkoiuerthi.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inltc2lqcG5lZ3Nra29pdWVydGhpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQyMzYzNDYsImV4cCI6MjAyOTgxMjM0Nn0.PM7Nr9qTZFEJsf62eHgkFXKGPqt0gfMdFN6SOJjCP6M"
+  supabaseUrl,
+  subbaseKey
 );
 
 function OnBoard() {
@@ -105,8 +108,8 @@ function OnBoard() {
       <Tabs value={currentTab} onValueChange={handleTabChange}>
         <div className="w-full">
           <div className="flex items-baseline justify-between border-b pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-              Welcome to onboarding
+            <h1 className="text-xl font-bold tracking-tight text-gray-900">
+              Welcome to Job Portal Engine
             </h1>
             <TabsList>
               <TabsTrigger value="candidate">Candidate</TabsTrigger>

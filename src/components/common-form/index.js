@@ -18,7 +18,7 @@ function CommonForm({
     switch (getCurrentControl.componentType) {
       case "input":
         content = (
-          <div className="relative flex items-center mt-8">
+          <div className="relative flex items-center justify-center w-full mt-8">
             <Input
               type="text"
               disabled={getCurrentControl.disabled}
@@ -32,7 +32,7 @@ function CommonForm({
                   [event.target.name]: event.target.value,
                 })
               }
-              className="w-full rounded-md h-[60px] px-4 border dark:bg-black bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="w-full lg:w-1/2 rounded-md h-[60px] px-4 border dark:bg-black bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
         );
@@ -41,6 +41,7 @@ function CommonForm({
 
       case "file":
         content = (
+          <div className="flex w-full justify-center items-center">
           <Label
             for={getCurrentControl.name}
             className="flex bg-gray-100 dark:bg-black items-center px-3 py-3 mx-auto mt-6 text-center border-2 border-dashed rounded-lg cursor-pointer"
@@ -52,6 +53,7 @@ function CommonForm({
               type="file"
             />
           </Label>
+          </div>
         );
 
         break;
@@ -85,10 +87,10 @@ function CommonForm({
   return (
     <form action={action}>
       {formControls.map((control) => renderInputByComponentType(control))}
-      <div className="mt-6 w-full">
+      <div className="mt-6 w-full flex justify-center items-center">
         <Button
           type={btnType || "submit"}
-          className="disabled:opacity-60 flex h-11 items-center justify-center px-5"
+          className="disabled:opacity-60 bg-blue-700 flex h-11 items-center justify-center px-5"
           disabled={isBtnDisabled}
         >
           {buttonText}

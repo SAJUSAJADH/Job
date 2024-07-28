@@ -3,7 +3,6 @@
 import { useState } from "react";
 import CommonCard from "../common-card";
 import JobIcon from "../job-icon";
-import { Button } from "../ui/button";
 import JobApplicants from "../job-applicants";
 
 function RecruiterJobCard({ jobItem, jobApplications }) {
@@ -14,15 +13,19 @@ function RecruiterJobCard({ jobItem, jobApplications }) {
     setShowCurrentCandidateDetailsModal,
   ] = useState(false);
 
+  console.log(jobItem)
+
   return (
     <div>
       <CommonCard
         icon={<JobIcon />}
         title={jobItem?.title}
+        location={jobItem?.location}
+        type={jobItem?.type}
         footerContent={
-          <Button
+          <button
             onClick={() => setShowApplicantsDrawer(true)}
-            className=" dark:bg-[#fffa27] disabled:opacity-55 flex h-11 items-center justify-center px-5"
+            className=" mr-2 my-1 uppercase tracking-wider px-2 text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-white border text-sm font-semibold rounded py-1 transition transform duration-500 cursor-pointer"
             disabled={
               jobApplications.filter((item) => item.jobID === jobItem?._id)
                 .length === 0
@@ -33,7 +36,7 @@ function RecruiterJobCard({ jobItem, jobApplications }) {
                 .length
             }{" "}
             Applicants
-          </Button>
+          </button>
         }
       />
       <JobApplicants

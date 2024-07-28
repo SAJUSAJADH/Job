@@ -87,3 +87,13 @@ body::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+@layer utilities{
+  .navitem{
+    @apply relative
+  }
+  .navitem::after{
+    @apply content-[''] bg-blue-500 h-[3px] left-0 -bottom-[5px] rounded-xl absolute duration-300
+  }
+}
+

@@ -26,14 +26,6 @@ function PostNewJob({ profileInfo, user, jobList }) {
   }
 
   function handleAddNewJob() {
-    if (!profileInfo?.isPremiumUser && jobList.length >= 2) {
-      toast({
-        variant: "destructive",
-        title: "You can post max 2 jobs.",
-        description: "Please opt for membership to post more jobs",
-      });
-      return;
-    }
     setShowJobDialog(true);
   }
 
@@ -58,7 +50,7 @@ function PostNewJob({ profileInfo, user, jobList }) {
     <div>
       <Button
         onClick={handleAddNewJob}
-        className="disabled:opacity-60 flex h-11 items-center justify-center px-5"
+        className="disabled:opacity-60 flex bg-blue-500 hover:bg-blue-600 h-11 items-center justify-center px-5"
       >
         Post A Job
       </Button>
