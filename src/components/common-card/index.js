@@ -8,7 +8,7 @@ import {
 
 function CommonCard({ title, icon, description, footerContent, location, type }) {
   return (
-    <div className="rounded-md w-full bg-white px-4 py-4 shadow-md transition transform duration-500 cursor-pointer">
+    <div className="rounded-md w-full bg-white my-4 px-4 py-4 shadow-md transition transform duration-500 cursor-pointer">
   <div className="flex flex-col justify-start">
     <div className="flex justify-between items-center w-96">
       <div className="text-lg font-semibold text-bookmark-blue flex space-x-1 items-center mb-2">
@@ -25,7 +25,7 @@ function CommonCard({ title, icon, description, footerContent, location, type })
         <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
       </svg>
       {location ? <span>{location}</span> : <></>}
-      <span className="bg-green-500 rounded-full uppercase text-white text-sm px-4 py-1 font-bold shadow-xl"> {type ? type : ''} </span>
+      {type && <span className="bg-green-500 rounded-full uppercase text-white text-sm px-4 py-1 font-bold shadow-xl"> {type ? type : ''} </span>}
     </div>
     <div>
       <div className="mt-5">
@@ -34,22 +34,7 @@ function CommonCard({ title, icon, description, footerContent, location, type })
     </div>
   </div>
 </div>
-    // <Card className="flex bg-gray-100 flex-col gap-6 rounded-2xl p-8 transition duration-300 hover:bg-white hover:shadow-2xl hover:shadow-gray-600/10 cursor-pointer">
-    //   <CardHeader className="p-0">
-    //     {icon ? icon : null}
-    //     {title ? (
-    //       <CardTitle className="text-xl max-w-[250px] text-ellipsis overflow-hidden whitespace-nowrap font-semibold text-gray-950">
-    //         {title}
-    //       </CardTitle>
-    //     ) : null}
-    //     {description ? (
-    //       <CardDescription className="mt-3 text-gray-600">
-    //         {description}
-    //       </CardDescription>
-    //     ) : null}
-    //   </CardHeader>
-    //   <CardFooter className="p-0">{footerContent}</CardFooter>
-    // </Card>
+    
   );
 }
 

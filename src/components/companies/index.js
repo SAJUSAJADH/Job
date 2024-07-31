@@ -33,7 +33,7 @@ function Companies({ jobsList }) {
   console.log(createUniqueSetOfCompanies);
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-7xl min-h-[70vh]">
       <div className="flex items-baseline dark:border-white justify-between border-b pb-6 pt-24">
         <h1 className="text-4xl dark:text-white font-bold tracking-tight text-gray-900">
           Browse Companies

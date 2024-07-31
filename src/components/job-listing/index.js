@@ -74,7 +74,7 @@ function JobListing({
 
   return (
     <div>
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl min-h-[70vh]">
         <div className="flex items-baseline dark:border-white justify-between border-b border-gray-200 pb-6 pt-24">
           <h1 className="text-xl dark:text-white font-bold tracking-tight text-gray-900">
             {profileInfo?.role === "candidate"

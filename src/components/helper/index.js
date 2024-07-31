@@ -18,11 +18,21 @@ import { Button } from "../ui/button";
 import { createJobApplicationAction } from "@/actions";
 import { useToast } from "../ui/use-toast";
 
-function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
+function Helper({ jobItem, profileInfo, jobApplications }) {
   const [showJobDetailsDrawer, setShowJobDetailsDrawer] = useState(false);
+  console.log(jobApplications, "jobApplications");
   const { toast } = useToast();
 
   async function handlejobApply() {
+    if (!profileInfo?.isPremiumUser && jobApplications.length >= 2) {
+      setShowJobDetailsDrawer(false);
+      toast({
+        variant: "destructive",
+        title: "You can apply max 2 jobs.",
+        description: "Please opt for membership to apply for more jobs",
+      });
+      return;
+    }
 
     await createJobApplicationAction(
       {
@@ -45,20 +55,12 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
         open={showJobDetailsDrawer}
         onOpenChange={setShowJobDetailsDrawer}
       >
-        <CommonCard
-          icon={<JobIcon />}
-          title={jobItem?.title}
-          description={jobItem?.companyName}
-          type={jobItem?.type}
-          footerContent={
-            <Button
+        <Button
               onClick={() => setShowJobDetailsDrawer(true)}
               className=" dark:bg-[#fffa27] flex h-11 items-center justify-center px-5"
             >
               View Details
             </Button>
-          }
-        />
         <DrawerContent className="p-6">
           <DrawerHeader className="px-0">
             <div className="flex justify-between">
@@ -100,7 +102,7 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
           </DrawerDescription>
           <div className="w-[150px] mt-6 flex justify-center dark:bg-white  items-center h-[40px] rounded-[4px]">
             <h2 className="text-xl font-bold dark:text-black  text-black">
-              {jobItem?.type} 
+              {jobItem?.type}
             </h2>
           </div>
           <h3 className="text-2xl font-medium text-black mt-3">
@@ -109,7 +111,7 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
           <div className="flex gap-4 mt-6">
             {jobItem?.skills.split(",").map((skillItem) => (
               <div className="w-[100px] flex justify-center items-center h-[35px] dark:bg-white  bg-black rounded-[4px]">
-                <h2 className="text-[13px] px-2 font-medium text-white dark:text-black ">
+                <h2 className="text-[13px] font-medium text-white dark:text-black ">
                   {skillItem}
                 </h2>
               </div>
@@ -121,4 +123,4 @@ function CandidateJobCard({ jobItem, profileInfo, jobApplications }) {
   );
 }
 
-export default CandidateJobCard;
+export default Helper;

@@ -106,7 +106,7 @@ function Feed({ user, profileInfo, allFeedPosts }) {
 
   return (
     <Fragment>
-      <div className="mx-auto">
+      <div className="mx-auto min-h-[70vh]">
         <div className="flex items-baseline justify-between dark:border-white border-b pb-6 pt-24">
           <h1 className="dark:text-white text-xl font-bold tracking-tight text-gray-800">
             Explore Feed

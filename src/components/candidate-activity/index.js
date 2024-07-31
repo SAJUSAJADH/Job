@@ -16,7 +16,7 @@ function CandidateActivity({ jobList, jobApplicants }) {
   console.log(uniqueStatusArray);
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-7xl min-h-[70vh]">
       <Tabs defaultValue="Applied" className="w-full">
         <div className="flex items-baseline dark:border-white justify-between border-b pb-6 pt-24">
           <h1 className="text-4xl font-bold dark:text-white tracking-tight text-gray-950">
@@ -51,6 +51,8 @@ function CandidateActivity({ jobList, jobApplicants }) {
                         icon={<JobIcon />}
                         title={finalFilteredItem?.title}
                         description={finalFilteredItem?.companyName}
+                        type={finalFilteredItem?.type}
+                        location={finalFilteredItem?.location}
                       />
                     ))}
                 </TabsContent>

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import HomepageButtonControls from "@/components/homepage-button-controls";
 import About from "@/components/about";
+import Chatbot from "@/components/chatbot";
 
 async function Home() {
   const user = await currentUser();
@@ -21,7 +22,7 @@ async function Home() {
     'use server';
     const search = data.get('search')
     if(search){
-      router.push('/search/'+search)
+      redirect('/search/'+search)
     }
   }
 
@@ -58,6 +59,9 @@ async function Home() {
         <Link href='/' className="mt-2 text-center text-base leading-loose text-gray-600 px-4 lg:px-80">www.jobportalengine.com</Link>
       </section>
       <About/>
+      <div className="flex justify-end items-center">
+        <Chatbot/>
+      </div>
       </>
   );
 }

@@ -53,14 +53,17 @@ function Header({ user, profileInfo }) {
       <header className="flex h-16 w-full shrink-0 items-center">
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="lg:hidden">
+            <div className="flex gap-2 lg:hidden items-center">
+            <Button className="lg:hidden bg-transparent text-black">
               <AlignJustify className="h-6 w-6" />
               <span className="sr-only">Toggle Navigation Menu</span>
             </Button>
+            <span className="text-black font-bold text-xl">Workwise</span>
+            </div>
           </SheetTrigger>
           <SheetContent side="left">
-            <Link className="mr-6 hidden lg:flex" href={"#"}>
-              <h3>JOBSCO</h3>
+            <Link className="mr-6 text-black font-bold text-xl flex" href={"/"}>
+              <h3>Workwise</h3>
             </Link>
             <div className="grid gap-2 py-6">
               {menuItems.map((menuItem) =>
@@ -73,11 +76,7 @@ function Header({ user, profileInfo }) {
                   </Link>
                 ) : null
               )}
-              <Moon
-                className="cursor-pointer mb-4"
-                fill={theme === "dark" ? "light" : "dark"}
-                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              />
+              
               <UserButton afterSignOutUrl="/" />
             </div>
           </SheetContent>

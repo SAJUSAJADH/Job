@@ -10,7 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 
 function PostNewJob({ profileInfo, user, jobList }) {
-  console.log(jobList, "jobList");
+  const [loading, setLoading] = useState(false)
   const [showJobDialog, setShowJobDialog] = useState(false);
   const [jobFormData, setJobFormData] = useState({
     ...initialPostNewJobFormData,
@@ -30,6 +30,7 @@ function PostNewJob({ profileInfo, user, jobList }) {
   }
 
   async function createNewJob() {
+    setLoading(true)
     await postNewJobAction(
       {
         ...jobFormData,
@@ -44,6 +45,7 @@ function PostNewJob({ profileInfo, user, jobList }) {
       companyName: profileInfo?.recruiterInfo?.companyName,
     });
     setShowJobDialog(false);
+    setLoading(false)
   }
 
   return (
