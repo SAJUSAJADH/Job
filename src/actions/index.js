@@ -33,6 +33,23 @@ export async function postNewJobAction(formData, pathToRevalidate) {
   revalidatePath(pathToRevalidate);
 }
 
+//update job
+
+export async function updateJobAction(formData, pathToRevalidate, id) {
+  await connectToDB();
+  await Job.findByIdAndUpdate(id, formData);
+  revalidatePath(pathToRevalidate);
+}
+
+//delete job
+
+export async function deleteJobAction(pathToRevalidate, id) {
+  await connectToDB();
+  await Job.findByIdAndDelete(id);
+  revalidatePath(pathToRevalidate);
+}
+
+
 //fetch job action
 //recruiter
 export async function fetchJobsForRecruiterAction(id) {
@@ -233,5 +250,14 @@ export async function updateFeedPostAction(data, pathToRevalidate) {
     { new: true }
   );
 
+  revalidatePath(pathToRevalidate);
+}
+
+
+//delete feed
+
+export async function deleteFeedPostAction(id, pathToRevalidate) {
+  await connectToDB();
+  await Feed.findByIdAndDelete(id);
   revalidatePath(pathToRevalidate);
 }

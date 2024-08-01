@@ -5,10 +5,10 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
-import { CirclePlus, Heart } from "lucide-react";
-import { Input } from "../ui/input";
+import { CirclePlus, Heart, Trash2Icon } from "lucide-react";
+import { Input } from "../ui/input1";
 import { createClient } from "@supabase/supabase-js";
-import { createFeedPostAction, updateFeedPostAction } from "@/actions";
+import { createFeedPostAction, deleteFeedPostAction, updateFeedPostAction } from "@/actions";
 
 const subbaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const subbaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -142,7 +142,8 @@ function Feed({ user, profileInfo, allFeedPosts }) {
                     <h3 className="mb-6 text-sm font-bold text-gray-900">
                       {feedPostItem?.message}
                     </h3>
-                    <div className="flex gap-5">
+                    <div className="flex justify-between gap-5">
+                      <div className="flex gap-5">
                       <Heart
                         size={25}
                         fill={
@@ -156,6 +157,8 @@ function Feed({ user, profileInfo, allFeedPosts }) {
                       <span className="font-semibold text-xl">
                         {feedPostItem?.likes?.length}
                       </span>
+                      </div>
+                      <Trash2Icon onClick={()=> deleteFeedPostAction(feedPostItem._id, '/feed')} size={40} className="cursor-pointer border border-purple-700 px-2 py-1 rounded-md text-7xl hover:bg-purple-700 hover:text-white"/>
                     </div>
                   </div>
                 </div>

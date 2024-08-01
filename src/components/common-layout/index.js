@@ -10,7 +10,7 @@ async function CommonLayout({ children, ...props }) {
 
   return (
     <NextThemesProvider {...props}>
-      <div className="mx-auto max-w-7xl p-6 lg:px-8">
+      <div className="mx-auto w-full p-6 lg:px-24">
         {/* Header Component */}
         <Header
           profileInfo={profileInfo}
