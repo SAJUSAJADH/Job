@@ -5,14 +5,35 @@ import Application from "@/models/application";
 import Feed from "@/models/feed";
 import Job from "@/models/job";
 import Profile from "@/models/profile";
+import { currentUser } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 
 const stripe = require("stripe")(
   "sk_test_51NMv6ZSC6E6fnyMeTYV3h3Xge6Tot3xYQVEO6KMpiB5A6bKIrRS9YymIBEupAFqF0XM274IwwU2Zq7EXx1Pn8LiA00SyPEZqk9"
 );
 
+
+
+
+//check account status
+
+export async function CheckAccuntStats(id) {
+  await connectToDB();
+  const account = await Profile.findOne({ userId: id });
+  if (account) {
+    return account.active;
+  };
+  return false;
+}
+
+
 //create profile action
 export async function createProfileAction(formData, pathToRevalidate) {
+  const stat = await CheckAccuntStats(formData.userId)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  }    
   await connectToDB();
   await Profile.create(formData);
   revalidatePath(pathToRevalidate);
@@ -28,7 +49,14 @@ export async function fetchProfileAction(id) {
 //create job action
 
 export async function postNewJobAction(formData, pathToRevalidate) {
+  // const user = await currentUser()
+  const stat = await CheckAccuntStats(formData.recruiterId)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
+
   await Job.create(formData);
   revalidatePath(pathToRevalidate);
 }
@@ -36,6 +64,12 @@ export async function postNewJobAction(formData, pathToRevalidate) {
 //update job
 
 export async function updateJobAction(formData, pathToRevalidate, id) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   await Job.findByIdAndUpdate(id, formData);
   revalidatePath(pathToRevalidate);
@@ -44,6 +78,11 @@ export async function updateJobAction(formData, pathToRevalidate, id) {
 //delete job
 
 export async function deleteJobAction(pathToRevalidate, id) {
+  const stat = await CheckAccuntStats(formData.userId)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   await Job.findByIdAndDelete(id);
   revalidatePath(pathToRevalidate);
@@ -76,6 +115,12 @@ export async function fetchJobsForCandidateAction(filterParams = {}) {
 //create job application
 
 export async function createJobApplicationAction(data, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   await Application.create(data);
   revalidatePath(pathToRevalidate);
@@ -100,6 +145,12 @@ export async function fetchJobApplicationsForRecruiter(recruiterID) {
 
 //update job application
 export async function updateJobApplicationAction(data, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   const {
     recruiterUserID,
@@ -147,6 +198,12 @@ export async function createFilterCategoryAction() {
 
 //update profile action
 export async function updateProfileAction(data, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   const {
     userId,
@@ -219,6 +276,12 @@ export async function createStripePaymentAction(data) {
 
 //create post action
 export async function createFeedPostAction(data, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   await Feed.create(data);
   revalidatePath(pathToRevalidate);
@@ -234,6 +297,12 @@ export async function fetchAllFeedPostsAction() {
 
 //update post action
 export async function updateFeedPostAction(data, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   const { userId, userName, message, image, likes, _id } = data;
   await Feed.findOneAndUpdate(
@@ -257,7 +326,29 @@ export async function updateFeedPostAction(data, pathToRevalidate) {
 //delete feed
 
 export async function deleteFeedPostAction(id, pathToRevalidate) {
+  const user = await currentUser()
+  const stat = await CheckAccuntStats(user?.id)
+  if (stat === false){
+    revalidatePath('/suspended')
+    return
+  } 
   await connectToDB();
   await Feed.findByIdAndDelete(id);
   revalidatePath(pathToRevalidate);
+}
+
+//suspend account
+
+export async function suspendAccounts(identifier, repath){
+  await connectToDB();
+  await Profile.findOneAndUpdate({userId: identifier},{active: false})
+  revalidatePath(repath)
+}
+
+//enable account
+
+export async function EnableAccounts(identifier, repath){
+  await connectToDB();
+  await Profile.findOneAndUpdate({userId: identifier},{active: true})
+  revalidatePath(repath)
 }

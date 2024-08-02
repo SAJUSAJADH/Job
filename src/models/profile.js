@@ -8,6 +8,10 @@ const ProfileSchema = new mongoose.Schema({
   memberShipType: String,
   memberShipStartDate: String,
   memberShipEndDate: String,
+  active: {
+    type: Boolean,
+    default: true,
+  },
   recruiterInfo: {
     name: String,
     companyName: String,

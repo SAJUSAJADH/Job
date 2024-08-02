@@ -6,7 +6,7 @@ import { Dialog, DialogContent } from "../ui/dialog";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { CirclePlus, Heart, Trash2Icon } from "lucide-react";
-import { Input } from "../ui/input1";
+import { Input } from "../ui/input";
 import { createClient } from "@supabase/supabase-js";
 import { createFeedPostAction, deleteFeedPostAction, updateFeedPostAction } from "@/actions";
 

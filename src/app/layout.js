@@ -4,9 +4,10 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import CommonLayout from "@/components/common-layout";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "@/components/ui/toaster";
+import { Toasterr } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,8 @@ export default function RootLayout({ children }) {
             />
             <Footer/>
           </Suspense>
-          <Toaster />
+          <Toaster/>
+          <Toasterr />
         </body>
         <Analytics/>
       </html>

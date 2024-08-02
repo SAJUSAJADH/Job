@@ -3,6 +3,7 @@ import { getProfiles } from '@/utils/db';
 import { UsersTable } from './product';
 
 export default async function UsersPage({ searchParams }) {
+  console.log(searchParams - 'identifier')
   const search = searchParams.q ?? '';
   const offset = searchParams.offset ?? 0;
   const { profiles, newOffset, totalProfiles } = await getProfiles(search, Number(offset));

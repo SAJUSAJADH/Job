@@ -15,7 +15,7 @@ async function Home() {
   if (user && !profileInfo?._id) redirect("/onboard");
 
  
-
+console.log(user)
 
 
   const handleSearch = async (data) => {

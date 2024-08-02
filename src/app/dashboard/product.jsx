@@ -20,9 +20,12 @@ import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 
+
+
 export function UsersTable({ profiles, offset, totalProfiles }) {
   let router = useRouter();
   let profilesPerPage = 5;
+
 
   function prevPage() {
     router.back();
@@ -49,6 +52,7 @@ export function UsersTable({ profiles, offset, totalProfiles }) {
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -60,6 +64,7 @@ export function UsersTable({ profiles, offset, totalProfiles }) {
                 <TableCell>{profile?.role === 'candidate' ? profile.candidateInfo?.name : profile.recruiterInfo?.name}</TableCell>
                 <TableCell>{profile?.email}</TableCell>
                 <TableCell>{profile?.role}</TableCell>
+                <TableCell>{profile?.active === true ? 'Active' : 'Suspended'}</TableCell>
                 <TableCell>
                   {/* Add actions here if needed */}
                 </TableCell>
