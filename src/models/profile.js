@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose } = require('mongoose')
 
 const ProfileSchema = new mongoose.Schema({
   userId: String,
@@ -34,9 +34,9 @@ const ProfileSchema = new mongoose.Schema({
     githubProfile: String,
     resume: String,
   },
-});
+})
 
 const Profile =
-  mongoose.models.Profile || mongoose.model("Profile", ProfileSchema);
+  mongoose.models.Profile || mongoose.model('Profile', ProfileSchema)
 
-export default Profile;
+export default Profile

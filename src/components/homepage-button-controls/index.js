@@ -1,48 +1,48 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
-import { useEffect } from "react";
+import { useRouter } from 'next/navigation'
+import { Button } from '../ui/button'
+import { useEffect } from 'react'
 
 function HomepageButtonControls({ user, profileInfo }) {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    router.refresh();
-  }, []);
+    router.refresh()
+  }, [])
 
   return (
-    <div className="flex space-x-4">
+    <div className='flex space-x-4'>
       <Button
-        onClick={() => router.push("/jobs")}
-        className="flex h-11 items-center justify-center px-5 bg-blue-500"
+        onClick={() => router.push('/jobs')}
+        className='flex h-11 items-center justify-center px-5 bg-blue-500'
       >
         {user
-          ? profileInfo?.role === "candidate"
-            ? "Browse Jobs"
-            : "Jobs Dasboard"
-          : "Find Jobs"}
+          ? profileInfo?.role === 'candidate'
+            ? 'Browse Jobs'
+            : 'Jobs Dasboard'
+          : 'Find Jobs'}
       </Button>
       <Button
         onClick={() =>
           router.push(
             user
-              ? profileInfo?.role === "candidate"
-                ? "/activity"
-                : "/jobs"
-              : "/jobs"
+              ? profileInfo?.role === 'candidate'
+                ? '/activity'
+                : '/jobs'
+              : '/jobs'
           )
         }
-        className="flex h-11 items-center justify-center px-5 bg-cyan-700 text-white"
+        className='flex h-11 items-center justify-center px-5 bg-cyan-700 text-white'
       >
         {user
-          ? profileInfo?.role === "candidate"
-            ? "Your Activity"
-            : "Post New Job"
-          : "Post New Job"}
+          ? profileInfo?.role === 'candidate'
+            ? 'Your Activity'
+            : 'Post New Job'
+          : 'Post New Job'}
       </Button>
     </div>
-  );
+  )
 }
 
-export default HomepageButtonControls;
+export default HomepageButtonControls

@@ -1,80 +1,97 @@
-import { Button } from '@/components/ui/button';
+import { EnableAccounts, suspendAccounts } from '@/actions'
+import { Add, Remove } from '@/components/remove'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  CardFooter
-} from '@/components/ui/card';
+  CardFooter,
+} from '@/components/ui/card'
 import {
   TableHead,
   TableRow,
   TableHeader,
   TableBody,
   Table,
-  TableCell
-} from '@/components/ui/table';
-import { getRecruiters } from '@/utils/db';
-import { ChevronLeft, Trash2Icon } from 'lucide-react';
-import { redirect } from 'next/dist/server/api-utils';
+  TableCell,
+} from '@/components/ui/table'
+import { getRecruiters } from '@/utils/db'
 
 export default async function CandidatePage() {
-  
-  let profilesPerPage = 5;
-  const search = {role: 'candidate'};
-  const offset = 0;
-  const { recruiters, newOffset, totalProfiles }= await getRecruiters(search, Number(offset));
+  let profilesPerPage = 5
+  const search = { role: 'candidate' }
+  const offset = 0
+  const { recruiters, newOffset, totalProfiles } = await getRecruiters(
+    search,
+    Number(offset)
+  )
   async function prevPage() {
     'use server'
   }
   async function nextPage() {
     'use server'
-    
+  }
+  async function suspendAccount(identifier) {
+    'use server'
+    await suspendAccounts(identifier, '/dashboard/candidates')
+  }
+
+  async function EnableAccount(identifier) {
+    'use server'
+    await EnableAccounts(identifier, '/dashboard/candidates')
   }
 
   return (
     <>
-    <Card>
-      <CardHeader>
-        <CardTitle>Candidates</CardTitle>
-        <CardDescription>View all Candidates.</CardDescription>
-      </CardHeader>
-      <CardContent>
-      </CardContent>
-    </Card>
-    <Card>
-      <CardContent className="flex overflow-x-auto">
-        <div className='min-w-full'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Remove</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {recruiters.map((profile) => (
-              <TableRow key={profile?.userId}>
-                <TableCell>{profile.candidateInfo?.name}</TableCell>
-                <TableCell>{profile?.email}</TableCell>
-                <TableCell>
-                  <Trash2Icon size={20} className='cursor-pointer hover:text-purple-700 text-center'/>
-                </TableCell>
-                <TableCell>
-                  {/* Add actions here if needed */}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        </div>
-      </CardContent>
-      {/* <CardFooter>
+      <Card>
+        <CardHeader>
+          <CardTitle>Candidates</CardTitle>
+          <CardDescription>View all Candidates.</CardDescription>
+        </CardHeader>
+        <CardContent></CardContent>
+      </Card>
+      <Card>
+        <CardContent className='flex overflow-x-auto'>
+          <div className='min-w-full'>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Remove</TableHead>
+                  <TableHead>
+                    <span className='sr-only'>Actions</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recruiters.map((profile) => (
+                  <TableRow key={profile?.userId}>
+                    <TableCell>{profile.candidateInfo?.name}</TableCell>
+                    <TableCell>{profile?.email}</TableCell>
+                    <TableCell>
+                      {profile?.active === true ? (
+                        <Remove
+                          suspendAccount={suspendAccount}
+                          id={profile?.userId}
+                        />
+                      ) : (
+                        <Add
+                          EnableAccount={EnableAccount}
+                          id={profile?.userId}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>{/* Add actions here if needed */}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        {/* <CardFooter>
         <form className="flex items-center w-full justify-between">
           <div className="text-xs text-muted-foreground">
             Showing{' '}
@@ -107,7 +124,7 @@ export default async function CandidatePage() {
           </div>
         </form>
       </CardFooter> */}
-    </Card>
+      </Card>
     </>
-  );
+  )
 }

@@ -1,15 +1,16 @@
+import React from 'react'
 import {
-  createFilterCategoryAction,
   fetchJobApplicationsForCandidate,
   fetchJobApplicationsForRecruiter,
   fetchJobsForCandidateAction,
   fetchJobsForRecruiterAction,
   fetchProfileAction,
 } from '@/actions'
-import JobListing from '@/components/job-listing'
 import { currentUser } from '@clerk/nextjs'
+import FeaturedJobs from '@/components/featuredJobs'
+import axios from 'axios'
 
-async function JobsPage({ searchParams }) {
+async function SuggestedJobs({ searchParams }) {
   console.log(searchParams, 'searchParams')
   const user = await currentUser()
   const profileInfo = await fetchProfileAction(user?.id)
@@ -24,17 +25,30 @@ async function JobsPage({ searchParams }) {
       ? await fetchJobApplicationsForCandidate(user?.id)
       : await fetchJobApplicationsForRecruiter(user?.id)
 
-  const fetchFilterCategories = await createFilterCategoryAction()
+    const recommendedJobsResponse = await fetch('http://127.0.0.1:8000/api/recommend_jobs', {
+        method: 'POST',
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({
+            user_id: user?.id,
+            jobs: jobList
+          }),
+    })
+
+    const data = await recommendedJobsResponse.json()
+
+    console.log('result: - ',data)
 
   return (
-    <JobListing
-      user={JSON.parse(JSON.stringify(user))}
+    <FeaturedJobs
       profileInfo={profileInfo}
       jobList={jobList}
+      featured={data}
       jobApplications={getJobApplicationList}
-      filterCategories={fetchFilterCategories}
     />
   )
 }
 
-export default JobsPage
+export default SuggestedJobs

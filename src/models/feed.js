@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const FeedSchema = new mongoose.Schema({
   userId: String,
@@ -11,7 +11,7 @@ const FeedSchema = new mongoose.Schema({
       reactorUserName: String,
     },
   ],
-});
+})
 
-const Feed = mongoose.models.Feed || mongoose.model("Feed", FeedSchema);
-export default Feed;
+const Feed = mongoose.models.Feed || mongoose.model('Feed', FeedSchema)
+export default Feed

@@ -1,32 +1,32 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import CommonForm from "../common-form";
-import { initialPostNewJobFormData, postNewJobFormControls } from "@/utils";
-import { postNewJobAction } from "@/actions";
-import { useToast } from "@/components/ui/use-toast";
-import Link from "next/link";
+import { useState } from 'react'
+import { Button } from '../ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
+import CommonForm from '../common-form'
+import { initialPostNewJobFormData, postNewJobFormControls } from '@/utils'
+import { postNewJobAction } from '@/actions'
+import { useToast } from '@/components/ui/use-toast'
+import Link from 'next/link'
 
 function PostNewJob({ profileInfo, user, jobList }) {
   const [loading, setLoading] = useState(false)
-  const [showJobDialog, setShowJobDialog] = useState(false);
+  const [showJobDialog, setShowJobDialog] = useState(false)
   const [jobFormData, setJobFormData] = useState({
     ...initialPostNewJobFormData,
     companyName: profileInfo?.recruiterInfo?.companyName,
-  });
+  })
 
-  const { toast } = useToast();
+  const { toast } = useToast()
 
   function handlePostNewBtnValid() {
     return Object.keys(jobFormData).every(
-      (control) => jobFormData[control].trim() !== ""
-    );
+      (control) => jobFormData[control].trim() !== ''
+    )
   }
 
   function handleAddNewJob() {
-    setShowJobDialog(true);
+    setShowJobDialog(true)
   }
 
   async function createNewJob() {
@@ -37,14 +37,14 @@ function PostNewJob({ profileInfo, user, jobList }) {
         recruiterId: user?.id,
         applicants: [],
       },
-      "/jobs"
-    );
+      '/jobs'
+    )
 
     setJobFormData({
       ...initialPostNewJobFormData,
       companyName: profileInfo?.recruiterInfo?.companyName,
-    });
-    setShowJobDialog(false);
+    })
+    setShowJobDialog(false)
     setLoading(false)
   }
 
@@ -52,26 +52,26 @@ function PostNewJob({ profileInfo, user, jobList }) {
     <div>
       <Button
         onClick={handleAddNewJob}
-        className="disabled:opacity-60 flex bg-blue-500 hover:bg-blue-600 h-11 items-center justify-center px-5"
+        className='disabled:opacity-60 flex bg-blue-500 hover:bg-blue-600 h-11 items-center justify-center px-5'
       >
         Post A Job
       </Button>
       <Dialog
         open={showJobDialog}
         onOpenChange={() => {
-          setShowJobDialog(false);
+          setShowJobDialog(false)
           setJobFormData({
             ...initialPostNewJobFormData,
             companyName: profileInfo?.recruiterInfo?.companyName,
-          });
+          })
         }}
       >
-        <DialogContent className="sm:max-w-screen-md h-[600px] overflow-auto">
+        <DialogContent className='sm:max-w-screen-md h-[600px] overflow-auto'>
           <DialogHeader>
             <DialogTitle>Post New Job</DialogTitle>
-            <div className="grid gap-4 py-4">
+            <div className='grid gap-4 py-4'>
               <CommonForm
-                buttonText={"Add"}
+                buttonText={'Add'}
                 formData={jobFormData}
                 setFormData={setJobFormData}
                 formControls={postNewJobFormControls}
@@ -83,7 +83,7 @@ function PostNewJob({ profileInfo, user, jobList }) {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
 
-export default PostNewJob;
+export default PostNewJob

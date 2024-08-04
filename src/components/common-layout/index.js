@@ -1,16 +1,16 @@
-import { currentUser } from "@clerk/nextjs";
-import Header from "../header";
-import { fetchProfileAction } from "@/actions";
-import * as React from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { currentUser } from '@clerk/nextjs'
+import Header from '../header'
+import { fetchProfileAction } from '@/actions'
+import * as React from 'react'
+import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
 async function CommonLayout({ children, ...props }) {
-  const user = await currentUser();
-  const profileInfo = await fetchProfileAction(user?.id);
+  const user = await currentUser()
+  const profileInfo = await fetchProfileAction(user?.id)
 
   return (
     <NextThemesProvider {...props}>
-      <div className="mx-auto w-full p-6 lg:px-24">
+      <div className='mx-auto w-full p-6 lg:px-24'>
         {/* Header Component */}
         <Header
           profileInfo={profileInfo}
@@ -24,7 +24,7 @@ async function CommonLayout({ children, ...props }) {
         {/* Main Content */}
       </div>
     </NextThemesProvider>
-  );
+  )
 }
 
-export default CommonLayout;
+export default CommonLayout

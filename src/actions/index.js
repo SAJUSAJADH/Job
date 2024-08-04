@@ -1,49 +1,37 @@
-"use server";
+'use server'
 
-import connectToDB from "@/database";
-import Application from "@/models/application";
-import Feed from "@/models/feed";
-import Job from "@/models/job";
-import Profile from "@/models/profile";
-import { currentUser } from "@clerk/nextjs";
-import { revalidatePath } from "next/cache";
-
-const stripe = require("stripe")(
-  "sk_test_51NMv6ZSC6E6fnyMeTYV3h3Xge6Tot3xYQVEO6KMpiB5A6bKIrRS9YymIBEupAFqF0XM274IwwU2Zq7EXx1Pn8LiA00SyPEZqk9"
-);
-
-
-
+import connectToDB from '@/database'
+import Application from '@/models/application'
+import Feed from '@/models/feed'
+import Job from '@/models/job'
+import Profile from '@/models/profile'
+import { currentUser } from '@clerk/nextjs'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 //check account status
 
 export async function CheckAccuntStats(id) {
-  await connectToDB();
-  const account = await Profile.findOne({ userId: id });
+  await connectToDB()
+  const account = await Profile.findOne({ userId: id })
   if (account) {
-    return account.active;
-  };
-  return false;
+    return account.active
+  }
+  return false
 }
-
 
 //create profile action
 export async function createProfileAction(formData, pathToRevalidate) {
-  const stat = await CheckAccuntStats(formData.userId)
-  if (stat === false){
-    revalidatePath('/suspended')
-    return
-  }    
-  await connectToDB();
-  await Profile.create(formData);
-  revalidatePath(pathToRevalidate);
+  await connectToDB()
+  await Profile.create(formData)
+  revalidatePath(pathToRevalidate)
 }
 
 export async function fetchProfileAction(id) {
-  await connectToDB();
-  const result = await Profile.findOne({ userId: id });
+  await connectToDB()
+  const result = await Profile.findOne({ userId: id })
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //create job action
@@ -51,14 +39,14 @@ export async function fetchProfileAction(id) {
 export async function postNewJobAction(formData, pathToRevalidate) {
   // const user = await currentUser()
   const stat = await CheckAccuntStats(formData.recruiterId)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
+  }
+  await connectToDB()
 
-  await Job.create(formData);
-  revalidatePath(pathToRevalidate);
+  await Job.create(formData)
+  revalidatePath(pathToRevalidate)
 }
 
 //update job
@@ -66,50 +54,49 @@ export async function postNewJobAction(formData, pathToRevalidate) {
 export async function updateJobAction(formData, pathToRevalidate, id) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  await Job.findByIdAndUpdate(id, formData);
-  revalidatePath(pathToRevalidate);
+  }
+  await connectToDB()
+  await Job.findByIdAndUpdate(id, formData)
+  revalidatePath(pathToRevalidate)
 }
 
 //delete job
 
 export async function deleteJobAction(pathToRevalidate, id) {
   const stat = await CheckAccuntStats(formData.userId)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  await Job.findByIdAndDelete(id);
-  revalidatePath(pathToRevalidate);
+  }
+  await connectToDB()
+  await Job.findByIdAndDelete(id)
+  revalidatePath(pathToRevalidate)
 }
-
 
 //fetch job action
 //recruiter
 export async function fetchJobsForRecruiterAction(id) {
-  await connectToDB();
-  const result = await Job.find({ recruiterId: id });
+  await connectToDB()
+  const result = await Job.find({ recruiterId: id })
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 //candidate
 export async function fetchJobsForCandidateAction(filterParams = {}) {
-  await connectToDB();
-  let updatedParams = {};
+  await connectToDB()
+  let updatedParams = {}
   Object.keys(filterParams).forEach((filterKey) => {
-    updatedParams[filterKey] = { $in: filterParams[filterKey].split(",") };
-  });
-  console.log(updatedParams, "updatedParams");
+    updatedParams[filterKey] = { $in: filterParams[filterKey].split(',') }
+  })
+  console.log(updatedParams, 'updatedParams')
   const result = await Job.find(
     filterParams && Object.keys(filterParams).length > 0 ? updatedParams : {}
-  );
+  )
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //create job application
@@ -117,41 +104,42 @@ export async function fetchJobsForCandidateAction(filterParams = {}) {
 export async function createJobApplicationAction(data, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    console.log('blocked')
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  await Application.create(data);
-  revalidatePath(pathToRevalidate);
+  }
+  await connectToDB()
+  await Application.create(data)
+  revalidatePath(pathToRevalidate)
 }
 
 //fetch job applications - candidate
 export async function fetchJobApplicationsForCandidate(candidateID) {
-  await connectToDB();
-  const result = await Application.find({ candidateUserID: candidateID });
+  await connectToDB()
+  const result = await Application.find({ candidateUserID: candidateID })
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //fetch job applications - recruiter
 
 export async function fetchJobApplicationsForRecruiter(recruiterID) {
-  await connectToDB();
-  const result = await Application.find({ recruiterUserID: recruiterID });
+  await connectToDB()
+  const result = await Application.find({ recruiterUserID: recruiterID })
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //update job application
 export async function updateJobApplicationAction(data, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
+  }
+  await connectToDB()
   const {
     recruiterUserID,
     name,
@@ -161,7 +149,7 @@ export async function updateJobApplicationAction(data, pathToRevalidate) {
     jobID,
     _id,
     jobAppliedDate,
-  } = data;
+  } = data
   await Application.findOneAndUpdate(
     {
       _id: _id,
@@ -176,35 +164,35 @@ export async function updateJobApplicationAction(data, pathToRevalidate) {
       jobAppliedDate,
     },
     { new: true }
-  );
-  revalidatePath(pathToRevalidate);
+  )
+  revalidatePath(pathToRevalidate)
 }
 
 //get candidate detAils by candidate ID
 export async function getCandidateDetailsByIDAction(currentCandidateID) {
-  await connectToDB();
-  const result = await Profile.findOne({ userId: currentCandidateID });
+  await connectToDB()
+  const result = await Profile.findOne({ userId: currentCandidateID })
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //create filter categories
 export async function createFilterCategoryAction() {
-  await connectToDB();
-  const result = await Job.find({});
+  await connectToDB()
+  const result = await Job.find({})
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //update profile action
 export async function updateProfileAction(data, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
+  }
+  await connectToDB()
   const {
     userId,
     role,
@@ -216,7 +204,7 @@ export async function updateProfileAction(data, pathToRevalidate) {
     recruiterInfo,
     candidateInfo,
     _id,
-  } = data;
+  } = data
 
   await Profile.findOneAndUpdate(
     {
@@ -234,77 +222,42 @@ export async function updateProfileAction(data, pathToRevalidate) {
       candidateInfo,
     },
     { new: true }
-  );
+  )
 
-  revalidatePath(pathToRevalidate);
-}
-
-//create stripe price id based on tier selection
-export async function createPriceIdAction(data) {
-  const session = await stripe.prices.create({
-    currency: "inr",
-    unit_amount: data?.amount * 100,
-    recurring: {
-      interval: "year",
-    },
-    product_data: {
-      name: "Premium Plan",
-    },
-  });
-
-  return {
-    success: true,
-    id: session?.id,
-  };
-}
-
-//create payment logic
-export async function createStripePaymentAction(data) {
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: data?.lineItems,
-    mode: "subscription",
-    success_url: `${process.env.URL}/membership` + "?status=success",
-    cancel_url: `${process.env.URL}/membership` + "?status=cancel",
-  });
-
-  return {
-    success: true,
-    id: session?.id,
-  };
+  revalidatePath(pathToRevalidate)
 }
 
 //create post action
 export async function createFeedPostAction(data, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  await Feed.create(data);
-  revalidatePath(pathToRevalidate);
+  }
+  await connectToDB()
+  await Feed.create(data)
+  revalidatePath(pathToRevalidate)
 }
 
 //fetch all posts action
 export async function fetchAllFeedPostsAction() {
-  await connectToDB();
-  const result = await Feed.find({});
+  await connectToDB()
+  const result = await Feed.find({})
 
-  return JSON.parse(JSON.stringify(result));
+  return JSON.parse(JSON.stringify(result))
 }
 
 //update post action
 export async function updateFeedPostAction(data, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  const { userId, userName, message, image, likes, _id } = data;
+  }
+  await connectToDB()
+  const { userId, userName, message, image, likes, _id } = data
   await Feed.findOneAndUpdate(
     {
       _id: _id,
@@ -317,38 +270,37 @@ export async function updateFeedPostAction(data, pathToRevalidate) {
       likes,
     },
     { new: true }
-  );
+  )
 
-  revalidatePath(pathToRevalidate);
+  revalidatePath(pathToRevalidate)
 }
-
 
 //delete feed
 
 export async function deleteFeedPostAction(id, pathToRevalidate) {
   const user = await currentUser()
   const stat = await CheckAccuntStats(user?.id)
-  if (stat === false){
-    revalidatePath('/suspended')
+  if (stat === false) {
+    redirect('/suspended')
     return
-  } 
-  await connectToDB();
-  await Feed.findByIdAndDelete(id);
-  revalidatePath(pathToRevalidate);
+  }
+  await connectToDB()
+  await Feed.findByIdAndDelete(id)
+  revalidatePath(pathToRevalidate)
 }
 
 //suspend account
 
-export async function suspendAccounts(identifier, repath){
-  await connectToDB();
-  await Profile.findOneAndUpdate({userId: identifier},{active: false})
+export async function suspendAccounts(identifier, repath) {
+  await connectToDB()
+  await Profile.findOneAndUpdate({ userId: identifier }, { active: false })
   revalidatePath(repath)
 }
 
 //enable account
 
-export async function EnableAccounts(identifier, repath){
-  await connectToDB();
-  await Profile.findOneAndUpdate({userId: identifier},{active: true})
+export async function EnableAccounts(identifier, repath) {
+  await connectToDB()
+  await Profile.findOneAndUpdate({ userId: identifier }, { active: true })
   revalidatePath(repath)
 }

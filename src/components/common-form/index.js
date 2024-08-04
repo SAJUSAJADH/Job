@@ -1,6 +1,6 @@
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 
 function CommonForm({
   action,
@@ -13,14 +13,14 @@ function CommonForm({
   handleFileChange,
 }) {
   function renderInputByComponentType(getCurrentControl) {
-    let content = null;
+    let content = null
 
     switch (getCurrentControl.componentType) {
-      case "input":
+      case 'input':
         content = (
-          <div className="relative flex items-center justify-center w-full mt-8">
+          <div className='relative flex items-center justify-center w-full mt-8'>
             <Input
-              type="text"
+              type='text'
               disabled={getCurrentControl.disabled}
               placeholder={getCurrentControl.placeholder}
               name={getCurrentControl.name}
@@ -32,37 +32,37 @@ function CommonForm({
                   [event.target.name]: event.target.value,
                 })
               }
-              className="w-full lg:w-1/2 rounded-md h-[60px] px-4 border dark:bg-black bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className='w-full lg:w-1/2 rounded-md h-[60px] px-4 border dark:bg-black bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
             />
           </div>
-        );
+        )
 
-        break;
+        break
 
-      case "file":
+      case 'file':
         content = (
-          <div className="flex w-full justify-center items-center">
-          <Label
-            for={getCurrentControl.name}
-            className="flex bg-gray-100 dark:bg-black items-center px-3 py-3 mx-auto mt-6 text-center border-2 border-dashed rounded-lg cursor-pointer"
-          >
-            <h2>{getCurrentControl.label}</h2>
-            <Input
-              onChange={handleFileChange}
-              id={getCurrentControl.name}
-              type="file"
-            />
-          </Label>
+          <div className='flex w-full justify-center items-center'>
+            <Label
+              for={getCurrentControl.name}
+              className='flex bg-gray-100 dark:bg-black items-center px-3 py-3 mx-auto mt-6 text-center border-2 border-dashed rounded-lg cursor-pointer'
+            >
+              <h2>{getCurrentControl.label}</h2>
+              <Input
+                onChange={handleFileChange}
+                id={getCurrentControl.name}
+                type='file'
+              />
+            </Label>
           </div>
-        );
+        )
 
-        break;
+        break
 
       default:
         content = (
-          <div className="relative flex items-center mt-8">
+          <div className='relative flex items-center mt-8'>
             <Input
-              type="text"
+              type='text'
               disabled={getCurrentControl.disabled}
               placeholder={getCurrentControl.placeholder}
               name={getCurrentControl.name}
@@ -74,30 +74,30 @@ function CommonForm({
                   [event.target.name]: event.target.value,
                 })
               }
-              className="w-full dark:bg-black rounded-md h-[60px] px-4 border bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className='w-full dark:bg-black rounded-md h-[60px] px-4 border bg-gray-100 text-lg outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0'
             />
           </div>
-        );
-        break;
+        )
+        break
     }
 
-    return content;
+    return content
   }
 
   return (
     <form action={action}>
       {formControls.map((control) => renderInputByComponentType(control))}
-      <div className="mt-6 w-full flex justify-center items-center">
+      <div className='mt-6 w-full flex justify-center items-center'>
         <Button
-          type={btnType || "submit"}
-          className="disabled:opacity-60 bg-blue-700 flex h-11 items-center justify-center px-5"
+          type={btnType || 'submit'}
+          className='disabled:opacity-60 bg-blue-700 flex h-11 items-center justify-center px-5'
           disabled={isBtnDisabled}
         >
           {buttonText}
         </Button>
       </div>
     </form>
-  );
+  )
 }
 
-export default CommonForm;
+export default CommonForm
