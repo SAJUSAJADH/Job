@@ -185,7 +185,7 @@ def recommend_jobs(user_id, jobs, csv_file):
         print(similarity)
 
         # If the similarity is above a certain threshold, add the job to the recommended list
-        if similarity > 0.5:
+        if similarity > 0.2:
             recommended_jobs.append(job)
 
     return recommended_jobs
